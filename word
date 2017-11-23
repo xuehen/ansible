@@ -1,14 +1,41 @@
-bxiaojie-test ODW [:/tmp] 1383$ mkdir test-hub
-bxiaojie-test ODW [:/tmp] 1384$ cd test-hub/
-bxiaojie-test ODW [:/tmp/test-hub] 1385$ git init
-Initialized empty Git repository in /tmp/test-hub/.git/
-bxiaojie-test ODW [:/tmp/test-hub] 1387$ ls -a
-.  ..  .git
-bxiaojie-test ODW [:/tmp/test-hub] 1388$ touch word
+#第一步：拉取github的项目repos
+#第二步：git add /git commit /
+#bxiaojie-test ODW [:/tmp/test-hub] 1403$ git push -u origin masterUsername for 'https://github.com': xuehen
+#Password for 'https://xuehen@github.com': 
+#To https://github.com/xuehen/ansible.git
+# ! [rejected]        master -> master (fetch first)
+#error: failed to push some refs to 'https://github.com/xuehen/ansible.git'
+#hint: Updates were rejected because the remote contains work that you do
+#hint: not have locally. This is usually caused by another repository pushing
+#hint: to the same ref. You may want to first merge the remote changes (e.g.,
+#hint: 'git pull') before pushing again.
+#hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+1 bxiaojie-test ODW [:/tmp/test-hub] 1405$ git clone https://github.com/xuehen/ansible.git
+Cloning into 'ansible'...
+remote: Counting objects: 23, done.
+remote: Compressing objects: 100% (21/21), done.
+remote: Total 23 (delta 8), reused 7 (delta 1), pack-reused 0
+Unpacking objects: 100% (23/23), done.
 
-bxiaojie-test ODW [:/tmp/test-hub] 1390$ git add .
-bxiaojie-test ODW [:/tmp/test-hub] 1391$ git commit -m "add word"
-[master (root-commit) 05ca9e0] add word
- 1 file changed, 8 insertions(+)
+bxiaojie-test ODW [:/tmp/test-hub/ansible] 1416$ git add .
+
+bxiaojie-test ODW [:/tmp/test-hub/ansible] 1417$ git commit -m "add word-file"
+[master 57d88d0] add word-file
+ 1 file changed, 14 insertions(+)
  create mode 100644 word
+#bxiaojie-test ODW [:/tmp/test-hub/ansible] 1418$ git remote add origin https://github.com/xuehen/new.git  该命令用于远端添加repo（web端），如果存在直接推送即可，这步非必须。
+#fatal: remote origin already exists.
+
+bxiaojie-test ODW [:/tmp/test-hub/ansible] 1420$ git push -u origin master
+Username for 'https://github.com': xuehen
+Password for 'https://xuehen@github.com': 
+Counting objects: 4, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 496 bytes | 0 bytes/s, done.
+Total 3 (delta 1), reused 0 (delta 0)
+remote: Resolving deltas: 100% (1/1), completed with 1 local object.
+To https://github.com/xuehen/ansible.git
+   03b0863..57d88d0  master -> master
+Branch master set up to track remote branch master from origin.
 
