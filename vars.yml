@@ -1,3 +1,4 @@
+# how to use "vars"
 - hosts: hosts
   gather_facts: false
   vars:
