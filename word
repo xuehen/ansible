@@ -1,0 +1,14 @@
+bxiaojie-test ODW [:/tmp] 1383$ mkdir test-hub
+bxiaojie-test ODW [:/tmp] 1384$ cd test-hub/
+bxiaojie-test ODW [:/tmp/test-hub] 1385$ git init
+Initialized empty Git repository in /tmp/test-hub/.git/
+bxiaojie-test ODW [:/tmp/test-hub] 1387$ ls -a
+.  ..  .git
+bxiaojie-test ODW [:/tmp/test-hub] 1388$ touch word
+
+bxiaojie-test ODW [:/tmp/test-hub] 1390$ git add .
+bxiaojie-test ODW [:/tmp/test-hub] 1391$ git commit -m "add word"
+[master (root-commit) 05ca9e0] add word
+ 1 file changed, 8 insertions(+)
+ create mode 100644 word
+
