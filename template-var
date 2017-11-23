@@ -5,4 +5,4 @@
      nologin: NOLOGIN
   tasks:
     - name: test template {{sbin}} {{nologin}}
-      template: src=/home/bxiaojie/password.j2 dest=/tmp/template-1
+      template: src=/home/bxiaojie/password dest=/tmp/template
