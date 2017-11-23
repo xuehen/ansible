@@ -1,0 +1,7 @@
+- hosts: hosts
+  gather_facts: false
+  vars:
+    - myport: 8080
+  tasks:
+    - name: test template {{myport}}
+      template: src=/home/bxiaojie/ansible/httpd.conf dest=/tmp/ccc

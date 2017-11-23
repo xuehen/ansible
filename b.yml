@@ -1,0 +1,9 @@
+- hosts: hosts
+  gather_facts: false
+  vars:
+    - myfunc: "hello,world"
+  tasks:
+    - name: print {{myfunc}}
+      shell: echo {{myfunc}}
+      register: var_result
+    - debug : var=var_result
