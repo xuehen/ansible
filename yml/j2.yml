@@ -1,0 +1,7 @@
+- hosts : hosts
+  vars:
+   - ip: false
+  tasks:
+    - name : test jinja2-{{ip}}
+      template: src=/tmp/jinja2 dest=/tmp/jinjia
+      
