@@ -1,8 +1,0 @@
-- hosts: hosts
-  gather_facts: false
-  vars:
-   - sbin: SBIN
-     nologin: NOLOGIN
-  tasks:
-    - name: test template {{sbin}} {{nologin}}
-      template: src=/home/bxiaojie/password dest=/tmp/template
