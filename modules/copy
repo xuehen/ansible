@@ -1,0 +1,79 @@
+#copy 模块的作用就是拷贝文件， fetch 模块类似，不过，fetch 模块是从远程主机中拉取文件到 ansible 管理主机，而 copy 模块是将 ansible 管理主机上的文件拷贝到远程主机中
+
+# ansible other -m copy -a  "src=/root/87.yaml dest=/root/ansible-demo/"
+172.20.100.51 | CHANGED => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python"
+    },
+    "changed": true,
+    "checksum": "5f0b5c7cab1d8a8c84d9ad05f91048900f4b4138",
+    "dest": "/root/ansible-demo/87.yaml",
+    "gid": 0,
+    "group": "root",
+    "md5sum": "81830f2da347e10c252624b9f8ef2295",
+    "mode": "0644",
+    "owner": "root",
+    "size": 10259,
+    "src": "/root/.ansible/tmp/ansible-tmp-1611646098.22-15863-170289685393643/source",
+    "state": "file",
+    "uid": 0
+}
+
+#在远程主机的目录下生成文件 ab.txt，ab.txt 文件中有两行文本，第一行文本为 aaa，第二行为 bbb，当使用 content 指定文件内容时，dest 参数对应的值必须是一个文件，而不能是一个路径。
+# ansible other -m copy -a  "content='aaa\nbbb\n' dest=/root/ansible-demo/ab.txt"
+172.20.100.51 | CHANGED => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python"
+    },
+    "changed": true,
+    "checksum": "90c206af0bfefa95541d3e724efe1dbc1ed3877f",
+    "dest": "/root/ansible-demo/ab.txt",
+    "gid": 0,
+    "group": "root",
+    "md5sum": "8b652b8c79f357694a04bd793f533c96",
+    "mode": "0644",
+    "owner": "root",
+    "size": 8,
+    "src": "/root/.ansible/tmp/ansible-tmp-1611646285.91-15928-13874271388019/source",
+    "state": "file",
+    "uid": 0
+}
+
+#ansible主机的copytest文件拷贝至目标主机，若目标主机存在该文件并且内容不同，则覆盖安装
+# ansible other -m copy -a  "src=/root/bxj/ansible/copytest dest=/root/ansible-demo/"
+172.20.100.51 | CHANGED => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python"
+    },
+    "changed": true,
+    "checksum": "47ce3ac56f911ac44537d6a3802b72ceed71e152",
+    "dest": "/root/ansible-demo/copytest",
+    "gid": 0,
+    "group": "root",
+    "md5sum": "c010aff9dc6276fdb7efefd1a2757658",
+    "mode": "0644",
+    "owner": "root",
+    "size": 8,
+    "src": "/root/.ansible/tmp/ansible-tmp-1611647245.35-16279-106156434900096/source",
+    "state": "file",
+    "uid": 0
+}
+
+#拷贝文件指定目标主机属主关系权限
+# ansible other -m copy -a  "src=/root/bxj/ansible/copytest dest=/root/ansible-demo/ mode=700 owner=samba group=root"
+172.20.100.51 | CHANGED => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python"
+    },
+    "changed": true,
+    "checksum": "47ce3ac56f911ac44537d6a3802b72ceed71e152",
+    "dest": "/root/ansible-demo/copytest",
+    "gid": 0,
+    "group": "root",
+    "mode": "0700",
+    "owner": "samba",
+    "path": "/root/ansible-demo/copytest",
+    "size": 8,
+    "state": "file",
+    "uid": 501
+}
