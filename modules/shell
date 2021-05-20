@@ -1,0 +1,26 @@
+shell模块可理解为command模块的升级版，支持管道符重定向等特性
+#管道
+# ansible all -m shell -a  " cat /etc/passwd|grep ssh "
+172.20.100.51 | CHANGED | rc=0 >>
+sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin
+172.20.100.53 | CHANGED | rc=0 >>
+sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin
+
+#执行具有执行权限的脚本
+# ansible other -m shell -a  " /root/ansible-demo/demo.sh "
+172.20.100.51 | CHANGED | rc=0 >>
+a nice day
+
+#重定向
+# ansible other -m shell -a  " echo "envision" >> /root/ansible-demo/day.txt "
+172.20.100.51 | CHANGED | rc=0 >>
+ 
+# ansible other -m shell -a  " cat  /root/ansible-demo/day.txt "
+172.20.100.51 | CHANGED | rc=0 >>
+a nice day
+envision
+
+# ansible other -m shell -a  " cat  /root/ansible-demo/demo.sh "
+172.20.100.51 | CHANGED | rc=0 >>
+#!/bin/sh
+echo "a nice day"
