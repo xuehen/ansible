@@ -1,0 +1,14 @@
+#yum 模块可以帮助我们在远程主机上通过 yum 源管理软件包。
+#  ansible local  -m yum -a 'name=nginx state=present disable_gpg_check=yes'
+172.20.100.53 | CHANGED => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python"
+    },
+    "changed": true,
+    "changes": {
+        "installed": [
+            "nginx"
+        ]
+    },
+    "msg": "",
+    "rc": 0,
