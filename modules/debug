@@ -1,0 +1,50 @@
+#* hostvars允许你访问另一个主机的变量，当然前提是ansible已经收集到这个主机的变量了：
+#group_names：是当前主机所在的group列表
+#groups：是所有inventory的group列表
+#inventory_hostname：是在inventory里定义的主机名（ip或主机名称）
+#play_hosts是当前的playbook范围内的主机列表
+#inventory_dir和inventory_file是定义inventory的目录和文件
+
+# ansible local -m debug -a "var=hostvars[inventory_hostname]"
+172.20.100.53 | SUCCESS => {
+    "hostvars[inventory_hostname]": {
+        "ansible_check_mode": false,
+        "ansible_diff_mode": false,
+        "ansible_facts": {},
+        "ansible_forks": 5,
+        "ansible_inventory_sources": [
+            "/etc/ansible/hosts"
+        ],
+        "ansible_playbook_python": "/usr/bin/python2",
+        "ansible_verbosity": 0,
+        "ansible_version": {
+            "full": "2.9.16",
+            "major": 2,
+            "minor": 9,
+            "revision": 16,
+            "string": "2.9.16"
+        },
+        "group_names": [
+            "local"
+        ],
+        "groups": {
+            "all": [
+                "172.20.100.51",
+                "172.20.100.53"
+            ],
+            "local": [
+                "172.20.100.53"
+            ],
+            "other": [
+                "172.20.100.51"
+            ],
+            "ungrouped": []
+        },
+        "inventory_dir": "/etc/ansible",
+        "inventory_file": "/etc/ansible/hosts",
+        "inventory_hostname": "172.20.100.53",
+        "inventory_hostname_short": "172",
+        "omit": "__omit_place_holder__2c5548f8723337f006a6818594961c835f5daa28",
+        "playbook_dir": "/root/bxj/ansible/roles"
+    }
+}
