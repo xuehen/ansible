@@ -1,4 +1,4 @@
-#！/bin/bash
+#!/bin/bash
 ##command###
 #command模块在远程主机执行命令，不支持管道、重定向等shell的特性；
 #chdir在执行命令前，进入到指定目录中，
