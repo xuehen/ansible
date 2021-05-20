@@ -1,0 +1,30 @@
+#在playbook中用register关键字定义一个变量，这个变量的值就是当前任务执行的输出结果，查看结果需要debug模块，
+#特别要注意msg:后面的双引号和空格
+(base) [root@centos7ami ansible]# cat register.yaml
+---
+- hosts: other
+  remote_user: root
+  tasks:
+  - name: try register-module
+    shell: date
+    register: result
+    ignore_errors: True
+  - name: show result
+    debug:
+      msg: "{{ result['stdout_lines'] }}"
+(base) [root@centos7ami ansible]# ansible-playbook register.yaml
+ 
+PLAY [other] *******************************************************************************
+ 
+TASK [Gathering Facts] *********************************************************************
+ok: [172.20.100.51]
+ 
+TASK [try register-module] *****************************************************************
+changed: [172.20.100.51]
+ 
+TASK [show result] *************************************************************************
+ok: [172.20.100.51] => {
+    "msg": [
+        "Wed Jan 27 16:08:20 CST 2021"
+    ]
+}
