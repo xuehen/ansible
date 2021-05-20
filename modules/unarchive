@@ -1,0 +1,66 @@
+#unarchive模块，将本地的压缩包上传到目标主机，并完成解压,remote_src=yes 要解压的包在受控端,默认在ansible主机控制端
+---
+- hosts: all
+  remote_user: envuser
+  gather_facts: false
+  vars:
+    APPVERSION: 2020-12-24_14-01-30_release_7.6.0
+  tasks:
+  - name: remove old files
+    shell: rm -rf ./*
+    args:
+      chdir: /home/envuser/AEPcalculate/app/
+     
+  - name: upload aep.zip
+    get_url:
+      url: ftp://greenwich:Rtepgwnm@10.21.168.13/continuous/aepcalculate-linux/release/{{APPVERSION}}/aepcalculate.zip
+      dest: /home/envuser/AEPcalculate/app
+      mode: 0755
+      owner: envuser
+      group: users
+      
+  #- name:  unzip aep.zip
+  #  shell: unzip ./aepcalculate.zip
+  #  args:
+  #   chdir: /home/envuser/AEPcalculate/app
+  - name: unzip aep.zip
+    unarchive:
+      src: /home/envuser/AEPcalculate/app/aepcalculate.zip
+      dest: /home/envuser/AEPcalculate/app
+      remote_src: yes
+      mode: 0755
+      owner: envuser
+      group: users
+ 
+# ansible other -m unarchive -a "src=adaptive.zip dest=/root/ansible-demo/ owner=bxj group=samba mode=777"
+172.20.100.51 | CHANGED => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python"
+    },
+    "changed": true,
+    "dest": "/root/ansible-demo/",
+    "extract_results": {
+        "cmd": [
+            "/usr/bin/unzip",
+            "-o",
+            "/root/.ansible/tmp/ansible-tmp-1611731222.17-11641-272104525913603/source",
+            "-d",
+            "/root/ansible-demo/"
+        ],
+        "err": "",
+        "out": "Archive:  /root/.ansible/tmp/ansible-tmp-1611731222.17-11641-272104525913603/source\n  inflating: /root/ansible-demo/adaptive-app-1.0-SNAPSHOT.jar  \n",
+        "rc": 0
+    },
+    "gid": 0,
+    "group": "root",
+    "handler": "ZipArchive",
+    "mode": "0755",
+    "owner": "root",
+    "size": 4096,
+    "src": "/root/.ansible/tmp/ansible-tmp-1611731222.17-11641-272104525913603/source",
+    "state": "directory",
+    "uid": 0
+}
+(base) [root@centos7ami ansible]# ansible other -m shell -a "ls -l  /root/ansible-demo/*.jar"
+172.20.100.51 | CHANGED | rc=0 >>
+-rwxrwxrwx 1 bxj samba 126909083 Jan 27 14:51 /root/ansible-demo/adaptive-app-1.0-SNAPSHOT.jar
