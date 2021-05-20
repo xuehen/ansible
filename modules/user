@@ -1,0 +1,75 @@
+#user 模块可以帮助我们管理远程主机上的用户，比如创建用户、修改用户、删除用户、为用户创建密钥对等操作
+
+#目标主机存在要创建的用户则不予操作，默认创建用户宿主目录
+# ansible other -m user -a 'name=bxj'
+172.20.100.51 | CHANGED => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python"
+    },
+    "changed": true,
+    "comment": "",
+    "create_home": true,
+    "group": 504,
+    "home": "/home/bxj",
+    "name": "bxj",
+    "shell": "/bin/bash",
+    "state": "present",
+    "system": false,
+    "uid": 502
+}
+
+#删除用户同时删除宿主目录，remove=yes决定宿主目录是否删除
+#  ansible other -m user -a 'name=bxj state=absent remove=yes'
+172.20.100.51 | CHANGED => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python"
+    },
+    "changed": true,
+    "force": false,
+    "name": "bxj",
+    "remove": true,
+    "state": "absent"
+}
+
+#添加用户的同时指定属组关系
+#  ansible other -m user -a 'name=bxj group=samba'
+172.20.100.51 | CHANGED => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python"
+    },
+    "changed": true,
+    "comment": "",
+    "create_home": true,
+    "group": 502,
+    "home": "/home/bxj",
+    "name": "bxj",
+    "shell": "/bin/bash",
+    "state": "present",
+    "system": false,
+    "uid": 502
+}
+(base) [root@centos7ami ansible]#  ansible other -m shell -a 'id bxj'
+172.20.100.51 | CHANGED | rc=0 >>
+uid=502(bxj) gid=502(samba) groups=502(samba)
+
+#添加用户到附属组
+(base) [root@centos7ami ansible]#  ansible other -m user -a 'name=bxj groups=samba,mysql,enadmin append=yes'
+172.20.100.51 | CHANGED => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python"
+    },
+    "append": true,
+    "changed": true,
+    "comment": "",
+    "group": 502,
+    "groups": "samba,mysql,enadmin",
+    "home": "/home/bxj",
+    "move_home": false,
+    "name": "bxj",
+    "shell": "/bin/bash",
+    "state": "present",
+    "uid": 502
+}
+(base) [root@centos7ami ansible]#  ansible other -m shell -a 'id bxj'
+172.20.100.51 | CHANGED | rc=0 >>
+uid=502(bxj) gid=502(samba) groups=502(samba),500(enadmin),501(mysql)
