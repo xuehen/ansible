@@ -1,0 +1,17 @@
+#service 模块可以帮助我们管理远程主机上的服务。比如，启动或停止远程主机中的 nginx 服务。管理的服务需要通过server nginx start或者systemctl start nginx启动
+#  ansible local -m service -a 'name=nginx state=started enabled=yes'
+172.20.100.53 | CHANGED => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python"
+    },
+    "changed": true,
+    "enabled": true,
+    "name": "nginx",
+    "state": "started",
+    "status": {
+}
+(base) [root@centos7ami ansible]#  ansible local -m shell -a ' systemctl status nginx'
+172.20.100.53 | CHANGED | rc=0 >>
+● nginx.service - The nginx HTTP and reverse proxy server
+   Loaded: loaded (/usr/lib/systemd/system/nginx.service; enabled; vendor preset: disabled)
+   Active: active (running) since Tue 2021-01-26 08:52:38 UTC; 1min 1s ago
