@@ -1,0 +1,37 @@
+#get_url模块用于将文件或软件从http、https或ftp下载到本地节点上或被管理机节点上
+# ansible local -m get_url -a "url=ftp://greenwich:Rtepgwnm@10.21.168.13/continuous/adaptive/release/2021-01-26_10-17-42_release_7.6.0/adaptive-app-1.0-SNAPSHOT.jar dest=/root/bxj/ansible/"
+172.20.100.53 | CHANGED => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python"
+    },
+    "changed": true,
+    "checksum_dest": null,
+    "checksum_src": "cd1359084ec1dc06188d03424d40519e96f0b672",
+    "dest": "/root/bxj/ansible/adaptive-app-1.0-SNAPSHOT.jar",
+    "elapsed": 85,
+    "gid": 0,
+    "group": "root",
+    "md5sum": "9e1bbedbe047cd60ffc8fed7d79dce6e",
+    "mode": "0640",
+    "msg": "OK (126909057 bytes)",
+    "owner": "root",
+    "size": 126909057,
+    "src": "/root/.ansible/tmp/ansible-tmp-1611652054.63-28754-275534158072623/tmpFWxl_j",
+    "state": "file",
+    "status_code": null,
+    "uid": 0,
+    "url": "ftp://greenwich:Rtepgwnm@10.21.168.13/continuous/adaptive/release/2021-01-26_10-17-42_release_7.6.0/adaptive-app-1.0-SNAPSHOT.jar"
+}
+(base) [root@centos7ami ansible]# ls
+adaptive-app-1.0-SNAPSHOT.jar  copytest
+ 
+ 
+ #yaml配置
+- name: upload gw-adaptive to destnation
+      get_url:
+        url: ftp://{{USERNAME}}:{{PWD}}@{{FTPPATH}}/{{VERSION}}/{{PACKNAME}}
+        #url: ftp://greenwich:Rtepgwnm@10.21.168.13/continuous/adaptive/release/{{VERSION}}/adaptive-app-1.0-SNAPSHOT.jar
+        dest: /home/greenwich/{{APPNAME}}/app
+        mode: 0755
+        owner: greenwich
+        group: greenwich
