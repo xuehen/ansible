@@ -1,0 +1,186 @@
+#register注册变量，将第一个task的执行结果保存在变量res中，when根据res的结果做出判断，若为true,则执行第二个task,否则跳过第二个task，不予执行
+(base) [root@centos7ami ansible]# cat demo.yaml
+- hosts: local
+  remote_user: root
+  gather_facts: false 
+  tasks:
+  - name: df -h
+    shell: df -Th
+    register: res
+  - name: show res
+    debug:
+      msg: "{{ res['stdout_lines'] }}"
+  - name: when
+    file:
+      path: /root/abcd.txt
+      state: touch
+    when: res.stdout_lines != ""
+(base) [root@centos7ami ansible]# ansible-playbook demo.yaml
+ 
+PLAY [local] ************************************************************************************************************************************************
+ 
+TASK [df -h] ************************************************************************************************************************************************
+changed: [172.20.100.53]
+ 
+TASK [show res] *********************************************************************************************************************************************
+ok: [172.20.100.53] => {
+    "msg": [
+        "Filesystem     Type      Size  Used Avail Use% Mounted on",
+        "/dev/sda1      xfs       100G   35G   66G  35% /",
+        "devtmpfs       devtmpfs  3.9G     0  3.9G   0% /dev",
+        "tmpfs          tmpfs     3.9G  124K  3.9G   1% /dev/shm",
+        "tmpfs          tmpfs     3.9G  385M  3.5G  10% /run",
+        "tmpfs          tmpfs     3.9G     0  3.9G   0% /sys/fs/cgroup",
+        "tmpfs          tmpfs     783M     0  783M   0% /run/user/0"
+    ]
+}
+ 
+TASK [when] *************************************************************************************************************************************************
+changed: [172.20.100.53]
+ 
+PLAY RECAP **************************************************************************************************************************************************
+172.20.100.53              : ok=3    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0  
+ 
+(base) [root@centos7ami ansible]# ll /root/abcd.txt
+-rw-r----- 1 root root 0 Jan 28 07:48 /root/abcd.txt
+##when判断结果为false
+(base) [root@centos7ami ansible]# ansible-playbook demo.yaml
+ 
+PLAY [local] ************************************************************************************************************************************************
+ 
+TASK [df -h] ************************************************************************************************************************************************
+changed: [172.20.100.53]
+ 
+TASK [show res] *********************************************************************************************************************************************
+ok: [172.20.100.53] => {
+    "msg": [
+        "Filesystem     Type      Size  Used Avail Use% Mounted on",
+        "/dev/sda1      xfs       100G   35G   66G  35% /",
+        "devtmpfs       devtmpfs  3.9G     0  3.9G   0% /dev",
+        "tmpfs          tmpfs     3.9G  124K  3.9G   1% /dev/shm",
+        "tmpfs          tmpfs     3.9G  385M  3.5G  10% /run",
+        "tmpfs          tmpfs     3.9G     0  3.9G   0% /sys/fs/cgroup",
+        "tmpfs          tmpfs     783M     0  783M   0% /run/user/0"
+    ]
+}
+ 
+TASK [when] *************************************************************************************************************************************************
+skipping: [172.20.100.53]
+ 
+PLAY RECAP **************************************************************************************************************************************************
+172.20.100.53              : ok=2    changed=1    unreachable=0    failed=0    skipped=1    rescued=0    ignored=0
+(base) [root@centos7ami ansible]# cat demo.yaml
+- hosts: local
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name: df -h
+    shell: df -Th
+    register: res
+  - name: show res
+    debug:
+      msg: "{{ res['stdout_lines'] }}"
+  - name: when
+    file:
+      path: /root/abcd.txt
+      state: touch
+    when: res.stdout_lines == ""
+#案例2
+(base) [root@centos7ami ansible]# cat demo.yaml
+- hosts: local
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name:  test
+    debug:
+      msg: "{{ item }}"
+    with_items:
+    - 1
+    - 2
+    - 3
+    - 7
+    - 8
+    - 10
+    when: item > 5
+(base) [root@centos7ami ansible]# ansible-playbook demo.yaml
+ 
+PLAY [local] ************************************************************************************************************************************************
+ 
+TASK [test] *************************************************************************************************************************************************
+skipping: [172.20.100.53] => (item=1)
+skipping: [172.20.100.53] => (item=2)
+skipping: [172.20.100.53] => (item=3)
+ok: [172.20.100.53] => (item=7) => {
+    "msg": 7
+}
+ok: [172.20.100.53] => (item=8) => {
+    "msg": 8
+}
+ok: [172.20.100.53] => (item=10) => {
+    "msg": 10
+}
+ 
+PLAY RECAP **************************************************************************************************************************************************
+172.20.100.53              : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0  
+#案例3
+(base) [root@centos7ami ansible]# cat demo.yaml
+- hosts: local
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name:  test1
+    debug:
+      msg: "{{ item }}"
+    with_items:
+    - 1
+    - 2
+    - 3
+    - 7
+    - 8
+    - 10
+    when: item > 5
+  - name:  test2
+    debug:
+      msg: "{{ item }}"
+    with_items:
+    - 1
+    - 2
+    - 3
+    - 7
+    - 8
+    - 10
+    when: item < 5
+(base) [root@centos7ami ansible]# ansible-playbook demo.yaml
+ 
+PLAY [local] ************************************************************************************************************************************************
+ 
+TASK [test1] ************************************************************************************************************************************************
+skipping: [172.20.100.53] => (item=1)
+skipping: [172.20.100.53] => (item=2)
+skipping: [172.20.100.53] => (item=3)
+ok: [172.20.100.53] => (item=7) => {
+    "msg": 7
+}
+ok: [172.20.100.53] => (item=8) => {
+    "msg": 8
+}
+ok: [172.20.100.53] => (item=10) => {
+    "msg": 10
+}
+ 
+TASK [test2] ************************************************************************************************************************************************
+ok: [172.20.100.53] => (item=1) => {
+    "msg": 1
+}
+ok: [172.20.100.53] => (item=2) => {
+    "msg": 2
+}
+ok: [172.20.100.53] => (item=3) => {
+    "msg": 3
+}
+skipping: [172.20.100.53] => (item=7)
+skipping: [172.20.100.53] => (item=8)
+skipping: [172.20.100.53] => (item=10)
+ 
+PLAY RECAP **************************************************************************************************************************************************
+172.20.100.53              : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0  
