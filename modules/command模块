@@ -1,0 +1,23 @@
+#！/bin/bash
+##command###
+#command模块在远程主机执行命令，不支持管道、重定向等shell的特性；
+#chdir在执行命令前，进入到指定目录中，
+#creates判断指定文件是否存在，如果存在，不执行后面的操作；
+#removes判断指定文件是否存在，如果存在，执行后面的操作
+# ansible other -m command -a "chdir=/root/ansible-demo/ ls -l "
+172.20.100.51 | CHANGED | rc=0 >>
+total 0
+
+# ansible other -m command -a "touch /root/ansible-demo/demo.txt creates=/root/ansible-demo/demo.txt"
+[[3~[WARNING]: Consider using the file module with state=touch rather than running 'touch'.  If you need to use command because file is insufficient you can add
+'warn: false' to this command task or set 'command_warnings=False' in ansible.cfg to get rid of this message.
+172.20.100.51 | CHANGED | rc=0 >>
+ 
+# ansible other -m command -a "touch /root/ansible-demo/demo.txt creates=/root/ansible-demo/demo.txt"
+172.20.100.51 | SUCCESS | rc=0 >>
+skipped, since /root/ansible-demo/demo.txt exists
+
+# ansible other -m command -a "rm -f /root/ansible-demo/demo.txt remove=/root/ansible-demo/demo.txt"
+[WARNING]: Consider using the file module with state=absent rather than running 'rm'.  If you need to use command because file is insufficient you can add
+'warn: false' to this command task or set 'command_warnings=False' in ansible.cfg to get rid of this message.
+172.20.100.51 | CHANGED | rc=0 >>
